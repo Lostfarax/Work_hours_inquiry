@@ -9,7 +9,7 @@ st.title("⏱️ Hours verification Portal")
 st.caption("Note: This page is only used to verify daily working hours and project details. The data source is dynamically updated with database.")
 
 # 1. Read Excel Data
-@st.cache_data(ttl=60)  # 60 seconds refresh
+@st.cache_data(ttl=3600)  # 3600 seconds refresh
 def load_data():
     try:
         df = pd.read_excel("daily_hours_log.xlsx")
@@ -106,20 +106,7 @@ if df is not None:
                     
                     # --- 工时核对与异常反馈区域 ---
                     st.subheader("💬 Feedback on abnormal working hours")
-                    st.caption("If you have any objections or omissions regarding the above work hour statistics (such as uncounted work hours, project discrepancies, etc.), please submit feedback below.")
-                    
-                    with st.form(key="feedback_form", clear_on_submit=True):
-                        # feedback_date = st.text_input("有问题的日期（例如：2026-07-15）：")
-                        # issue_type = st.selectbox("问题类型：", ["工时数有误", "遗漏天数未录入", "工作项目与实际不符", "其他"])
-                        feedback_text = st.text_area("Please provide a detailed explanation:", placeholder="For example: On July 15th, I actually worked 8.5 hours at the mine, but the table only shows 6 hours...")
-                        
-                        submit_btn = st.form_submit_button(label="Submit")
-                        
-                        if submit_btn:
-                            if not feedback_text.strip():
-                                st.warning("Please fill in the specific feedback instructions.")
-                            else:
-                                st.success("✅ Feedback submitted successfully! Administrators will review and correct your work hours promptly.")
-                                # 提示：生产环境中可将此反馈记录写入数据库或发送通知
+                    st.caption("If you have any objections or omissions regarding the above work hour statistics (such as uncounted work hours, project discrepancies, etc.), please contact your supervisor.")
+                
         else:
             st.info("👈 Please enter your **employee ID** in the left sidebar to view your work hour details.")
